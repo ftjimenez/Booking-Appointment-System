@@ -1,16 +1,26 @@
 package com.program.appointment.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.program.appointment.dto.CreateAppointmentRequest;
+import com.program.appointment.dto.UpdateAppointmentRequest;
 import com.program.appointment.model.Appointment;
 import com.program.appointment.service.AppointmentService;
 
-@Controller
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/api/appointments")
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
@@ -19,51 +29,35 @@ public class AppointmentController {
         this.appointmentService = appointmentService;
     }
 
-    @GetMapping("/")
-    public String showHome(Model model) {
-        model.addAttribute("appointment", new Appointment());
-        model.addAttribute("appointments", appointmentService.getAllAppointments());
-        return "index";
+    @GetMapping
+    public List<Appointment> getAllAppointments() {
+        return appointmentService.getAllAppointments();
     }
 
-    @PostMapping("/book")
-    public String book(@ModelAttribute Appointment appointment, Model model) {
-
-        String message = appointmentService.addAppointment(appointment);
-
-        model.addAttribute("appointment", new Appointment());
-        model.addAttribute("appointments", appointmentService.getAllAppointments());
-        model.addAttribute("message", message);
-        return "index";
+    @GetMapping("/{id}")
+    public Appointment getAppointmentById(@PathVariable Long id) {
+        return appointmentService.getAppointmentById(id);
     }
 
-    @GetMapping("/edit/{id}")
-    public String editForm(@PathVariable Long id, Model model) {
-        Appointment appointment = appointmentService.getAppointment(id);
-        model.addAttribute("appointment", appointment);
-        return "edit";
+    @PostMapping
+    public Appointment createAppointment(@Valid @RequestBody CreateAppointmentRequest request) {
+        Appointment appointment = new Appointment(request.getName(), request.getDate(), request.getTime(), request.getDescription());
+        return appointmentService.createAppointment(appointment);
     }
 
-    @PostMapping("/update/{id}")
-    public String update(@PathVariable Long id,
-                         @ModelAttribute Appointment appointment,
-                         Model model) {
-
-        String message = appointmentService.updateAppointment(id, appointment);
-
-        model.addAttribute("appointment", new Appointment());
-        model.addAttribute("appointments", appointmentService.getAllAppointments());
-        model.addAttribute("message", message);
-        return "index";
+    @PutMapping("/{id}")
+    public Appointment updateAppointment(@PathVariable Long id, @Valid @RequestBody UpdateAppointmentRequest request) {
+        if (!id.equals(request.getId())) {
+            throw new IllegalArgumentException("ID mismatch");
+        }
+        Appointment appointment = new Appointment(request.getName(), request.getDate(), request.getTime(), request.getDescription());
+        appointment.setId(id);
+        return appointmentService.updateAppointment(id, appointment);
     }
 
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, Model model) {
-        String message = appointmentService.deleteAppointment(id);
-
-        model.addAttribute("appointment", new Appointment());
-        model.addAttribute("appointments", appointmentService.getAllAppointments());
-        model.addAttribute("message", message);
-        return "index";
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAppointment(@PathVariable Long id) {
+        appointmentService.deleteAppointment(id);
+        return ResponseEntity.noContent().build();
     }
 }

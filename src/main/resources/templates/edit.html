@@ -24,16 +24,24 @@
           th:object="${appointment}" 
           method="post" class="row g-3">
 
-        <div class="col-md-4">
-            <input type="text" th:field="*{customerName}" class="form-control" required>
-        </div>
-
-        <div class="col-md-4">
-            <input type="text" th:field="*{serviceType}" class="form-control" required>
+        <div class="col-md-3">
+            <input type="text" th:field="*{name}" class="form-control" required>
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
         </div>
 
         <div class="col-md-3">
+            <input type="text" th:field="*{description}" class="form-control" required>
+            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-2">
             <input type="date" th:field="*{date}" class="form-control" required>
+            <span th:if="${#fields.hasErrors('date')}" th:errors="*{date}" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-2">
+            <input type="time" th:field="*{time}" class="form-control" required>
+            <span th:if="${#fields.hasErrors('time')}" th:errors="*{time}" class="text-danger"></span>
         </div>
 
         <div class="col-md-1">

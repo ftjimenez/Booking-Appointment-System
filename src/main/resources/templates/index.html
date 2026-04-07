@@ -23,16 +23,24 @@
     <!-- FORM -->
     <form th:action="@{/book}" th:object="${appointment}" method="post" class="row g-3 mb-3">
 
-        <div class="col-md-4">
-            <input type="text" th:field="*{customerName}" class="form-control" placeholder="Customer Name" required>
+        <div class="col-md-3">
+            <input type="text" th:field="*{name}" class="form-control" placeholder="Customer Name" required>
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
         </div>
 
-        <div class="col-md-4">
-            <input type="text" th:field="*{serviceType}" class="form-control" placeholder="Service Type" required>
+        <div class="col-md-3">
+            <input type="text" th:field="*{description}" class="form-control" placeholder="Description" required>
+            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger"></span>
         </div>
 
         <div class="col-md-3">
             <input type="date" th:field="*{date}" class="form-control" required>
+            <span th:if="${#fields.hasErrors('date')}" th:errors="*{date}" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-2">
+            <input type="time" th:field="*{time}" class="form-control" required>
+            <span th:if="${#fields.hasErrors('time')}" th:errors="*{time}" class="text-danger"></span>
         </div>
 
         <div class="col-md-1">
@@ -51,17 +59,19 @@
         <thead class="table-dark">
             <tr>
                 <th>Name</th>
-                <th>Service</th>
+                <th>Description</th>
                 <th>Date</th>
+                <th>Time</th>
                 <th>Actions</th>
             </tr>
         </thead>
 
         <tbody>
             <tr th:each="appt : ${appointments}">
-                <td th:text="${appt.customerName}"></td>
-                <td th:text="${appt.serviceType}"></td>
+                <td th:text="${appt.name}"></td>
+                <td th:text="${appt.description}"></td>
                 <td th:text="${appt.date}"></td>
+                <td th:text="${appt.time}"></td>
                 <td>
                     <a th:href="@{'/edit/' + ${appt.id}}" class="btn btn-sm btn-warning">Edit</a>
                     <a th:href="@{'/delete/' + ${appt.id}}" class="btn btn-sm btn-danger"

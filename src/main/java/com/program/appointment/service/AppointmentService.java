@@ -1,61 +1,48 @@
 package com.program.appointment.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.program.appointment.exception.ResourceNotFoundException;
 import com.program.appointment.model.Appointment;
+import com.program.appointment.repository.AppointmentRepository;
 
 @Service
 public class AppointmentService {
 
-    private final Map<Long, Appointment> appointments = new HashMap<>();
-    private Long nextId = 1L;
+    private final AppointmentRepository appointmentRepository;
 
-    // Create
-    public String addAppointment(Appointment appointment) {
-        for (Appointment appt : appointments.values()) {
-            if (appt.getDate().equals(appointment.getDate())) {
-                return "Error: Date already booked!";
-            } 
-        }
-        appointment.setId(nextId++);
-        appointments.put(appointment.getId(), appointment);
-        return "Appointment booked successfully!";
+    public AppointmentService(AppointmentRepository appointmentRepository) {
+        this.appointmentRepository = appointmentRepository;
     }
 
-    // Read All
+    public Appointment createAppointment(Appointment appointment) {
+        return appointmentRepository.save(appointment);
+    }
+
     public List<Appointment> getAllAppointments() {
-        return new ArrayList<>(appointments.values());
+        return appointmentRepository.findAll();
     }
 
-    // Read by Id
-    public Appointment getAppointment(Long id) {
-        return appointments.get(id);
+    public Appointment getAppointmentById(Long id) {
+        return appointmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found with id " + id));
     }
 
-    // Update
-    public String updateAppointment(Long id, Appointment appointment) {
-        if (!appointments.containsKey(id)) return "Appointment not found!";
-        // Check date conflict
-        for (Appointment appt : appointments.values()) {
-            if (!appt.getId().equals(id) && appt.getDate().equals(appointment.getDate())) {
-                return "Error: Date already booked!";
-            }
-        }
-        appointment.setId(id);
-        appointments.put(id, appointment);
-        return "Appointment updated successfully!";
+    public Appointment updateAppointment(Long id, Appointment appointmentDetails) {
+        Appointment existingAppointment = getAppointmentById(id);
+
+        existingAppointment.setName(appointmentDetails.getName());
+        existingAppointment.setDate(appointmentDetails.getDate());
+        existingAppointment.setTime(appointmentDetails.getTime());
+        existingAppointment.setDescription(appointmentDetails.getDescription());
+
+        return appointmentRepository.save(existingAppointment);
     }
 
-    // Delete
-    public String deleteAppointment(Long id) {
-        if (appointments.remove(id) != null) {
-            return "Appointment deleted successfully!";
-        }
-        return "Appointment not found!";
+    public void deleteAppointment(Long id) {
+        Appointment existingAppointment = getAppointmentById(id);
+        appointmentRepository.delete(existingAppointment);
     }
 }
