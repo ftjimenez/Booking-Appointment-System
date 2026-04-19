@@ -40,7 +40,7 @@ public class AppointmentController {
     }
 
     @PostMapping
-    public Appointment createAppointment(@Valid @RequestBody CreateAppointmentRequest request) {
+    public Appointment createAppointment(@RequestBody CreateAppointmentRequest request) {
         Appointment appointment = new Appointment(request.getName(), request.getDate(), request.getTime(), request.getDescription());
         return appointmentService.createAppointment(appointment);
     }
