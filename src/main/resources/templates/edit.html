@@ -1,59 +1,63 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <title>Edit Appointment</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background-color: #aaaaaa; }
-        .container {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        h2 { color: #000000; }
-    </style>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:replace="~{fragments :: head('Edit appointment')}">
+    <title>Edit appointment</title>
 </head>
+<body class="app-body">
 
-<body>
-<div class="container mt-4">
+<div class="app-shell">
 
     <div th:replace="~{fragments :: navbar}"></div>
 
-    <h2>Edit Appointment</h2>
+    <header class="app-page-hero">
+        <h1>Edit appointment</h1>
+        <p>Update the details below, then save your changes.</p>
+    </header>
 
-    <form th:action="@{'/update/' + ${appointment.id}}" 
-          th:object="${appointment}" 
-          method="post" class="row g-3">
-
-        <div class="col-md-3">
-            <input type="text" th:field="*{name}" class="form-control" required>
-            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
+    <div class="app-card mb-4">
+        <div class="app-card-header">
+            <i class="bi bi-pencil-square me-2" aria-hidden="true"></i> Appointment details
         </div>
-
-        <div class="col-md-3">
-            <input type="text" th:field="*{description}" class="form-control" required>
-            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger"></span>
+        <div class="app-card-body">
+            <form th:action="@{'/update/' + ${appointment.id}}"
+                  th:object="${appointment}"
+                  method="post"
+                  class="row g-3">
+                <div class="col-12 col-md-6 col-lg-3">
+                    <label class="app-form-label" for="edit-name">Customer name</label>
+                    <input type="text" id="edit-name" th:field="*{name}" class="form-control" required>
+                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger small d-block mt-1"></span>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <label class="app-form-label" for="edit-description">Description</label>
+                    <input type="text" id="edit-description" th:field="*{description}" class="form-control" required>
+                    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger small d-block mt-1"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-2">
+                    <label class="app-form-label" for="edit-date">Date</label>
+                    <input type="date" id="edit-date" th:field="*{date}" class="form-control" required>
+                    <span th:if="${#fields.hasErrors('date')}" th:errors="*{date}" class="text-danger small d-block mt-1"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-2">
+                    <label class="app-form-label" for="edit-time">Time</label>
+                    <input type="time" id="edit-time" th:field="*{time}" class="form-control" required>
+                    <span th:if="${#fields.hasErrors('time')}" th:errors="*{time}" class="text-danger small d-block mt-1"></span>
+                </div>
+                <div class="col-12 col-lg-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="bi bi-check-lg me-1" aria-hidden="true"></i> Update
+                    </button>
+                </div>
+            </form>
         </div>
+    </div>
 
-        <div class="col-md-2">
-            <input type="date" th:field="*{date}" class="form-control" required>
-            <span th:if="${#fields.hasErrors('date')}" th:errors="*{date}" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-2">
-            <input type="time" th:field="*{time}" class="form-control" required>
-            <span th:if="${#fields.hasErrors('time')}" th:errors="*{time}" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-1">
-            <button type="submit" class="btn btn-success">Update</button>
-        </div>
-
-    </form>
-
-    <a href="/" class="btn btn-secondary mt-3">Back</a>
+    <a th:href="@{/}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-1" aria-hidden="true"></i> Back to dashboard
+    </a>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

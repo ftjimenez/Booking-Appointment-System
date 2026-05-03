@@ -1,0 +1,297 @@
+/* Appointment app — design tokens and layout */
+:root {
+    --app-primary: #2563eb;
+    --app-primary-hover: #1d4ed8;
+    --app-primary-soft: rgba(37, 99, 235, 0.12);
+    --app-surface: #ffffff;
+    --app-surface-elevated: #f8fafc;
+    --app-text: #0f172a;
+    --app-text-muted: #64748b;
+    --app-border: #e2e8f0;
+    --app-radius: 12px;
+    --app-radius-sm: 8px;
+    --app-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 4px 20px rgba(15, 23, 42, 0.08);
+    --app-shadow-lg: 0 4px 24px rgba(15, 23, 42, 0.1);
+    --app-gradient-start: #e0e7ff;
+    --app-gradient-mid: #f1f5f9;
+    --app-gradient-end: #e0f2fe;
+}
+
+.app-body {
+    min-height: 100vh;
+    margin: 0;
+    font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+    color: var(--app-text);
+    background: linear-gradient(145deg, var(--app-gradient-start) 0%, var(--app-gradient-mid) 45%, var(--app-gradient-end) 100%);
+    background-attachment: fixed;
+}
+
+.app-shell {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 3rem;
+}
+
+@media (min-width: 768px) {
+    .app-shell {
+        padding: 2rem 1.5rem 4rem;
+    }
+}
+
+.app-card {
+    background: var(--app-surface);
+    border-radius: var(--app-radius);
+    box-shadow: var(--app-shadow);
+    border: 1px solid var(--app-border);
+    overflow: hidden;
+}
+
+.app-card-header {
+    padding: 1rem 1.25rem;
+    background: var(--app-surface-elevated);
+    border-bottom: 1px solid var(--app-border);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--app-text);
+}
+
+.app-card-body {
+    padding: 1.25rem;
+}
+
+.app-navbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1.25rem;
+    margin-bottom: 1.5rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: var(--app-radius);
+    border: 1px solid var(--app-border);
+    box-shadow: var(--app-shadow);
+}
+
+.app-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    text-decoration: none;
+    color: inherit;
+}
+
+.app-brand:hover {
+    color: var(--app-primary);
+}
+
+.app-brand-title {
+    font-weight: 700;
+    font-size: 1.125rem;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.app-brand-title i {
+    color: var(--app-primary);
+}
+
+.app-brand-tagline {
+    font-size: 0.75rem;
+    color: var(--app-text-muted);
+    font-weight: 500;
+}
+
+.app-user-badge {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--app-text-muted);
+}
+
+.app-user-badge strong {
+    color: var(--app-text);
+    font-weight: 600;
+}
+
+.app-page-hero {
+    margin-bottom: 1.5rem;
+}
+
+.app-page-hero h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin: 0 0 0.375rem;
+    color: var(--app-text);
+}
+
+.app-page-hero p {
+    margin: 0;
+    color: var(--app-text-muted);
+    font-size: 0.95rem;
+}
+
+.app-form-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--app-text);
+    margin-bottom: 0.375rem;
+}
+
+.app-body .form-control {
+    border-radius: var(--app-radius-sm);
+    border-color: var(--app-border);
+}
+
+.app-body .form-control:focus {
+    border-color: var(--app-primary);
+    box-shadow: 0 0 0 3px var(--app-primary-soft);
+}
+
+.app-body .btn-primary {
+    background-color: var(--app-primary);
+    border-color: var(--app-primary);
+    border-radius: var(--app-radius-sm);
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+}
+
+.app-body .btn-primary:hover {
+    background-color: var(--app-primary-hover);
+    border-color: var(--app-primary-hover);
+}
+
+.app-table-wrap {
+    overflow-x: auto;
+}
+
+.app-body .table {
+    margin-bottom: 0;
+}
+
+.app-body .table thead th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    color: var(--app-text-muted);
+    background: var(--app-surface-elevated);
+    border-bottom: 2px solid var(--app-border);
+    padding: 0.875rem 1rem;
+}
+
+.app-body .table tbody td {
+    padding: 0.875rem 1rem;
+    vertical-align: middle;
+    border-color: var(--app-border);
+}
+
+.app-body .table tbody tr:hover {
+    background-color: rgba(241, 245, 249, 0.6);
+}
+
+.app-action-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+}
+
+.app-action-btns .btn {
+    border-radius: var(--app-radius-sm);
+    font-size: 0.8125rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    color: var(--app-text-muted);
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    color: var(--app-border);
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: 0.9375rem;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Auth centered pages */
+.app-auth-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.app-auth-card {
+    width: 100%;
+    max-width: 440px;
+    background: var(--app-surface);
+    border-radius: var(--app-radius);
+    box-shadow: var(--app-shadow-lg);
+    border: 1px solid var(--app-border);
+    padding: 2rem 2rem 1.75rem;
+}
+
+.app-auth-brand {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.app-auth-brand a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.app-auth-brand-title {
+    font-weight: 700;
+    font-size: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--app-text);
+}
+
+.app-auth-brand-title i {
+    color: var(--app-primary);
+}
+
+.app-auth-brand-tagline {
+    font-size: 0.8125rem;
+    color: var(--app-text-muted);
+    margin-top: 0.25rem;
+}
+
+.app-auth-card h2 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    text-align: center;
+}
+
+.app-hint {
+    font-size: 0.75rem;
+    color: var(--app-text-muted);
+    margin-top: 0.25rem;
+}
+
+.app-link-muted {
+    color: var(--app-text-muted);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.app-link-muted:hover {
+    color: var(--app-primary);
+}
