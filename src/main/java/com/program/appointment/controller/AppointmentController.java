@@ -3,6 +3,8 @@ package com.program.appointment.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,34 +32,38 @@ public class AppointmentController {
     }
 
     @GetMapping
-    public List<Appointment> getAllAppointments() {
-        return appointmentService.getAllAppointments();
+    public List<Appointment> getAllAppointments(@AuthenticationPrincipal UserDetails principal) {
+        return appointmentService.getAllAppointments(principal.getUsername());
     }
 
     @GetMapping("/{id}")
-    public Appointment getAppointmentById(@PathVariable Long id) {
-        return appointmentService.getAppointmentById(id);
+    public Appointment getAppointmentById(@AuthenticationPrincipal UserDetails principal, @PathVariable Long id) {
+        return appointmentService.getAppointmentById(id, principal.getUsername());
     }
 
     @PostMapping
-    public Appointment createAppointment(@RequestBody CreateAppointmentRequest request) {
-        Appointment appointment = new Appointment(request.getName(), request.getDate(), request.getTime(), request.getDescription());
-        return appointmentService.createAppointment(appointment);
+    public Appointment createAppointment(@AuthenticationPrincipal UserDetails principal,
+            @RequestBody CreateAppointmentRequest request) {
+        Appointment appointment = new Appointment(request.getName(), request.getDate(), request.getTime(),
+                request.getDescription());
+        return appointmentService.createAppointment(appointment, principal.getUsername());
     }
 
     @PutMapping("/{id}")
-    public Appointment updateAppointment(@PathVariable Long id, @Valid @RequestBody UpdateAppointmentRequest request) {
+    public Appointment updateAppointment(@AuthenticationPrincipal UserDetails principal, @PathVariable Long id,
+            @Valid @RequestBody UpdateAppointmentRequest request) {
         if (!id.equals(request.getId())) {
             throw new IllegalArgumentException("ID mismatch");
         }
-        Appointment appointment = new Appointment(request.getName(), request.getDate(), request.getTime(), request.getDescription());
-        appointment.setId(id);
-        return appointmentService.updateAppointment(id, appointment);
+        Appointment appointment = new Appointment(request.getName(), request.getDate(), request.getTime(),
+                request.getDescription());
+        return appointmentService.updateAppointment(id, appointment, principal.getUsername());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAppointment(@PathVariable Long id) {
-        appointmentService.deleteAppointment(id);
+    public ResponseEntity<Void> deleteAppointment(@AuthenticationPrincipal UserDetails principal,
+            @PathVariable Long id) {
+        appointmentService.deleteAppointment(id, principal.getUsername());
         return ResponseEntity.noContent().build();
     }
 }
