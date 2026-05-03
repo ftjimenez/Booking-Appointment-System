@@ -6,7 +6,7 @@
     <style>
         body { background-color: #cccccc; }
         .card-register {
-            max-width: 420px;
+            max-width: 480px;
             margin: 3rem auto;
             padding: 2rem;
             border-radius: 12px;
@@ -24,6 +24,16 @@
             <label class="form-label" for="username">Username</label>
             <input class="form-control" id="username" th:field="*{username}" type="text" autocomplete="username" required>
             <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger small d-block"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="displayName">Name</label>
+            <input class="form-control" id="displayName" th:field="*{displayName}" type="text" autocomplete="name" required>
+            <span th:if="${#fields.hasErrors('displayName')}" th:errors="*{displayName}" class="text-danger small d-block"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="email">Email</label>
+            <input class="form-control" id="email" th:field="*{email}" type="email" autocomplete="email" required>
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger small d-block"></span>
         </div>
         <div class="mb-3">
             <label class="form-label" for="password">Password</label>

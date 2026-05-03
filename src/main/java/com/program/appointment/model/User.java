@@ -24,6 +24,12 @@ public class User {
     @Column(nullable = false)
     private boolean enabled = true;
 
+    @Column(length = 128)
+    private String name;
+
+    @Column(unique = true, length = 128)
+    private String email;
+
     public User() {
     }
 
@@ -31,6 +37,14 @@ public class User {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
+    }
+
+    public User(String username, String password, boolean enabled, String name, String email) {
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+        this.name = name;
+        this.email = email;
     }
 
     public Long getId() {
@@ -63,5 +77,21 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

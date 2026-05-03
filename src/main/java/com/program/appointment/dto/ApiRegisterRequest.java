@@ -5,9 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 /**
- * Thymeleaf registration — same fields as {@link ApiRegisterRequest} for parity with {@code POST /api/register}.
+ * Public REST registration at {@code POST /api/register} (name and email required).
  */
-public class RegisterRequest {
+public class ApiRegisterRequest {
 
     @NotBlank(message = "Username is required")
     @Size(min = 3, max = 64, message = "Username must be between 3 and 64 characters")
@@ -22,7 +22,7 @@ public class RegisterRequest {
 
     @NotBlank(message = "Name is required")
     @Size(max = 128)
-    private String displayName;
+    private String name;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Email must be valid")
@@ -53,12 +53,12 @@ public class RegisterRequest {
         this.confirmPassword = confirmPassword;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getName() {
+        return name;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {

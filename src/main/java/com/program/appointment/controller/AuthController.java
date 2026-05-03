@@ -1,6 +1,5 @@
 package com.program.appointment.controller;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,20 +9,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.program.appointment.dto.RegisterRequest;
-import com.program.appointment.model.User;
-import com.program.appointment.repository.UserRepository;
+import com.program.appointment.exception.EmailTakenException;
+import com.program.appointment.exception.PasswordMismatchException;
+import com.program.appointment.exception.UsernameTakenException;
+import com.program.appointment.service.UserRegistrationService;
 
 import jakarta.validation.Valid;
 
 @Controller
 public class AuthController {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserRegistrationService userRegistrationService;
 
-    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    public AuthController(UserRegistrationService userRegistrationService) {
+        this.userRegistrationService = userRegistrationService;
     }
 
     @GetMapping("/login")
@@ -41,17 +40,21 @@ public class AuthController {
     public String register(@Valid @ModelAttribute("registerRequest") RegisterRequest request,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
-        if (!request.getPassword().equals(request.getConfirmPassword())) {
-            bindingResult.rejectValue("confirmPassword", "password.mismatch", "Passwords do not match");
-        }
-        if (userRepository.existsByUsername(request.getUsername())) {
-            bindingResult.rejectValue("username", "username.taken", "Username already taken");
-        }
         if (bindingResult.hasErrors()) {
             return "register";
         }
-        User user = new User(request.getUsername(), passwordEncoder.encode(request.getPassword()), true);
-        userRepository.save(user);
+        try {
+            userRegistrationService.register(request);
+        } catch (PasswordMismatchException e) {
+            bindingResult.rejectValue("confirmPassword", "password.mismatch", e.getMessage());
+            return "register";
+        } catch (UsernameTakenException e) {
+            bindingResult.rejectValue("username", "username.taken", e.getMessage());
+            return "register";
+        } catch (EmailTakenException e) {
+            bindingResult.rejectValue("email", "email.taken", e.getMessage());
+            return "register";
+        }
         redirectAttributes.addFlashAttribute("registered", true);
         return "redirect:/login";
     }
